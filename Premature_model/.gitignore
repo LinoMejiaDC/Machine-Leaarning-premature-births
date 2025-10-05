@@ -1,0 +1,28 @@
+# --- DATA ---
+Premature_model/data/raw/
+Premature_model/data/interim/
+Premature_model/data/processed/
+*.csv
+*.xlsx
+*.parquet
+*.pkl
+*.h5
+*.zip
+*.rar
+
+# --- NOTEBOOK CHECKPOINTS ---
+.ipynb_checkpoints/
+
+# --- PYTHON CACHE FILES ---
+__pycache__/
+*.py[cod]
+
+# --- SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+
+# --- LOGS AND OUTPUTS ---
+*.log
+Premature_model/outputs/models/
+Premature_model/outputs/figures/
+Premature_model/outputs/reports/
