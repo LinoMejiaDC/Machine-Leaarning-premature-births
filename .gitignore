@@ -1,4 +1,4 @@
-# --- DATA ---
+# --- DATA FILES ---
 Premature_model/data/raw/
 Premature_model/data/interim/
 Premature_model/data/processed/
@@ -10,19 +10,18 @@ Premature_model/data/processed/
 *.zip
 *.rar
 
-# --- NOTEBOOK CHECKPOINTS ---
-.ipynb_checkpoints/
-
-# --- PYTHON CACHE FILES ---
+# --- PYTHON CACHE ---
 __pycache__/
 *.py[cod]
+
+# --- JUPYTER ---
+.ipynb_checkpoints/
 
 # --- SYSTEM FILES ---
 .DS_Store
 Thumbs.db
 
-# --- LOGS AND OUTPUTS ---
-*.log
+# --- OUTPUTS ---
 Premature_model/outputs/models/
-Premature_model/outputs/figures/
 Premature_model/outputs/reports/
+Premature_model/outputs/figures/
