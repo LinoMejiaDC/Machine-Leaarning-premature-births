@@ -126,51 +126,53 @@ def aggregate_sum_by_caseid(df, caseid_col="CASEID"):
     return aggregated_df
 
 
+# def aggregate_with_value_suffix(df, caseid_col="CASEID", exclude_cols=None):
+#     """
+#     Aggregate at CASEID level by creating dummy columns for each unique value in selected columns,
+#     and summing the counts. Excludes columns specified in exclude_cols.
+
+#     Parameters:
+#         df (pd.DataFrame): Input DataFrame
+#         caseid_col (str): Column name to group by
+#         exclude_cols (list): List of columns to exclude from processing
+
+#     Returns:
+#         pd.DataFrame: Aggregated DataFrame with CASEID and dummy count columns
+#     """
+#     if exclude_cols is None:
+#         exclude_cols = []
+
+#     # Columns to process: all except caseid_col and excluded ones
+#     cols_to_process = [c for c in df.columns if c not in [caseid_col] + exclude_cols]
+
+#     # Create dummy variables for the selected columns
+#     df_dummies = pd.get_dummies(df[cols_to_process].astype(str), prefix=cols_to_process)
+
+#     # Combine CASEID with the dummies
+#     df_combined = pd.concat([df[[caseid_col]], df_dummies], axis=1)
+
+#     # Aggregate by CASEID summing the dummy counts
+#     #agg_df = df_combined.groupby(caseid_col, as_index=False).sum()
+
+#     return df_combined
+
 def aggregate_with_value_suffix(df, caseid_col="CASEID", exclude_cols=None):
     """
     Aggregate at CASEID level by creating dummy columns for each unique value in selected columns,
     and summing the counts. Excludes columns specified in exclude_cols.
-
-    Parameters:
-        df (pd.DataFrame): Input DataFrame
-        caseid_col (str): Column name to group by
-        exclude_cols (list): List of columns to exclude from processing
-
-    Returns:
-        pd.DataFrame: Aggregated DataFrame with CASEID and dummy count columns
     """
     if exclude_cols is None:
         exclude_cols = []
 
-    # Columns to process: all except caseid_col and excluded ones
     cols_to_process = [c for c in df.columns if c not in [caseid_col] + exclude_cols]
 
-    # Create dummy variables for the selected columns
-    df_dummies = pd.get_dummies(df[cols_to_process].astype(str), prefix=cols_to_process)
+    # Create dummy variables as numeric (0/1)
+    df_dummies = pd.get_dummies(df[cols_to_process].astype(str), prefix=cols_to_process).astype(int)
 
     # Combine CASEID with the dummies
     df_combined = pd.concat([df[[caseid_col]], df_dummies], axis=1)
 
-    # Aggregate by CASEID summing the dummy counts
-    #agg_df = df_combined.groupby(caseid_col, as_index=False).sum()
-
     return df_combined
-
-# def aggregate_by_caseid_mean(df, caseid_col="CASEID"):
-#     """
-#     Aggregate a DataFrame by caseid_col and compute the mean of all other columns.
-    
-#     Parameters:
-#     - df (pd.DataFrame): Input DataFrame
-#     - caseid_col (str): Column to group by (default = "CASEID")
-    
-#     Returns:
-#     - pd.DataFrame: Aggregated DataFrame with mean values
-#     """
-#     # Group by CASEID and calculate mean for numeric columns
-#     df_agg = df.groupby(caseid_col, as_index=False).mean(numeric_only=True)
-    
-#     return df_agg
 
 
 def analyze_matches(left_df, right_df, label):

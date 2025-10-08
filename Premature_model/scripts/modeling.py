@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import f1_score, recall_score, precision_score, roc_auc_score, roc_curve, auc, confusion_matrix
 from sklearn.inspection import permutation_importance
-from xgboost import XGBClassifier
+#from xgboost import XGBClassifier
 
 
 import numpy as np
@@ -23,9 +23,6 @@ from sklearn.metrics import log_loss
 from scipy.stats import ks_2samp
 
 import time 
-
-pd.set_option('display.max_rows', 4000)
-pd.set_option('display.precision', 8)
 
 def rank_models(train_data, train_labels, test_data, test_labels, holdout_data, holdout_labels):
     models = {
