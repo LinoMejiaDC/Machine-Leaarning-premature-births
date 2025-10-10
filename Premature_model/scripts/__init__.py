@@ -23,7 +23,9 @@ from .Wrangling import (
     fill_missing_with_median_coding
 )
 
-from .modeling import (rank_models)
+from .modeling import (rank_models,
+                       split_dataset, 
+                       plot_roc_curve_from_df)
 
 __all__ = [
     # utils.py
@@ -48,5 +50,7 @@ __all__ = [
     'fill_missing_with_median_coding',
 
     #modeling
-    'rank_models'
+    'rank_models',
+    'split_dataset',
+    'plot_roc_curve_from_df'
 ]
