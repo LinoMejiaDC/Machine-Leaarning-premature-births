@@ -15,6 +15,7 @@ from sklearn.metrics import f1_score, recall_score, precision_score, roc_auc_sco
 from sklearn.inspection import permutation_importance
 #from xgboost import XGBClassifier
 
+
 from scipy.stats import ks_2samp
 
 import xgboost as xgb
@@ -373,5 +374,74 @@ def plot_confusion_matrix(model, X, y, dataset_name='Test'):
 
     return plt.show()
 
+
+def train_perm_importance_gb(
+    df, target,
+    test_size=0.3,
+    random_state=42,
+    scoring="roc_auc",
+    n_repeats=10
+):
+    """
+    Fast, self-contained permutation-importance workflow using a light GradientBoostingClassifier.
+    - Uses ONLY numeric features (keeps it quick; avoids encoding).
+    - Median-imputes missing numerics.
+    - Trains a small GB model.
+    - Computes permutation importance on the held-out test set.
+
+    Returns:
+        df_imp  : DataFrame [rank, feature, importance_mean, importance_std]
+        result  : sklearn permutation_importance result (for advanced plotting)
+        pipe    : fitted sklearn Pipeline (imputer + model)
+        X_test  : test features (DataFrame, post column selection)
+        y_test  : test targets (Series)
+    """
+    # Split features / target
+    y = df[target]
+    X = df.drop(columns=[target])
+
+    # Keep only numeric columns for speed & simplicity
+    num_cols = X.select_dtypes(include=[np.number]).columns
+    X = X[num_cols].copy()
+
+    # Train/test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=random_state, stratify=y if y.nunique() == 2 else None
+    )
+
+    # Lightweight Gradient Boosting model
+    pipe = Pipeline(steps=[
+        ("imputer", SimpleImputer(strategy="median")),
+        ("model", GradientBoostingClassifier(
+            n_estimators=120,        # small, quick
+            learning_rate=0.08,
+            max_depth=3,
+            subsample=0.9,
+            random_state=random_state
+        ))
+    ])
+
+    # Train
+    pipe.fit(X_train, y_train)
+
+    # Permutation importance on held-out test set
+    result = permutation_importance(
+        pipe, X_test, y_test,
+        scoring=scoring,
+        n_repeats=n_repeats,
+        random_state=random_state,
+        n_jobs=None
+    )
+
+    # Rank table
+    df_imp = pd.DataFrame({
+        "feature": X_test.columns,
+        "importance_mean": result.importances_mean,
+        "importance_std": result.importances_std
+    }).sort_values("importance_mean", ascending=False).reset_index(drop=True)
+    df_imp["rank"] = np.arange(1, len(df_imp) + 1)
+    df_imp = df_imp[["rank", "feature", "importance_mean", "importance_std"]]
+
+    return df_imp, result
 
 

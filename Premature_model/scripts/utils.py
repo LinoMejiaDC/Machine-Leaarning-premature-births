@@ -219,13 +219,13 @@ def analyze_matches_explicit_keys(target_df, right_df, label, right_key):
     print(f" - Matches on CASEID + {right_key}: {match_count} ({match_pct:.2f}%)\n")
 
 
-def save_file(df, output_file = "Modulo1633_REC41_2024_fil_clear.csv"):
+def save_file(df, dir = "data\\interim", output_file = "Modulo1633_REC41_2024_fil_clear.csv"):
 
     # File name only
 
     # Go one level up from the current working directory
     base_dir = os.path.dirname(os.getcwd())   # gives "c:\\Users\\linoc\\OneDrive\\Encoder\\03_partos"
-    output_dir = os.path.join(base_dir, "data\\interim")
+    output_dir = os.path.join(base_dir, dir)
 
     #Full path
     output_path = os.path.join(output_dir, output_file)
