@@ -20,7 +20,12 @@ from .Wrangling import (
     categorize_columns,
     fill_missing_with_mode,
     target_encode, 
-    fill_missing_with_median_coding
+    fill_missing_with_median_coding,
+    #target_encode_dataframe,
+    target_encode_dataframe_map,
+    #sklearn_target_encode
+
+    
 )
 
 from .modeling import (rank_models,
@@ -42,12 +47,16 @@ __all__ = [
     'drop_high_null_columns',
     'save_file',
     'add_value_suffix',
+    'save_txt',
 
     # Wrangling.py
     'categorize_columns',
     'fill_missing_with_mode',
     'target_encode', 
     'fill_missing_with_median_coding',
+    # 'target_encode_dataframe',
+    'target_encode_dataframe_map',
+    # 'sklearn_target_encode',
 
     #modeling
     'rank_models',

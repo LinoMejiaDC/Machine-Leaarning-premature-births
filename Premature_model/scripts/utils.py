@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import os
+import json
+
 
 def counter(a,b):
     c  = a +b
@@ -278,5 +280,33 @@ def add_value_suffix(df):
 
     return df_dummies
 
+def save_txt(data, dir="data\\interim", output_file="encoding_map.txt"):
+    """
+    Save a dictionary, list, or text content to a .txt file.
+    
+    Args:
+        data: Can be a dict, list, or string.
+        dir (str): Relative directory path where file will be saved.
+        output_file (str): Name of the .txt file.
+    """
+    # Go one level up from current working directory
+    base_dir = os.path.dirname(os.getcwd())  # e.g. "c:\\Users\\linoc\\OneDrive\\Encoder\\03_partos"
+    output_dir = os.path.join(base_dir, dir)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Full path
+    output_path = os.path.join(output_dir, output_file)
+
+    # Convert data to string
+    if isinstance(data, (dict, list)):
+        content = json.dumps(data, indent=4, ensure_ascii=False)
+    else:
+        content = str(data)
+
+    # Save to .txt
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print(f"✅ File saved successfully at: {output_path}")
 
 
