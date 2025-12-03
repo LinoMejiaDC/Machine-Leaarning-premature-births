@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
-
-#Sklearn
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
@@ -13,11 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import f1_score, recall_score, precision_score, roc_auc_score, roc_curve, auc, confusion_matrix
 from sklearn.inspection import permutation_importance
-#from xgboost import XGBClassifier
-
-
 from scipy.stats import ks_2samp
-
 import xgboost as xgb
 import lightgbm as lgb
 from sklearn.svm import SVC
@@ -161,7 +155,6 @@ def rank_models(train_data, train_labels, test_data, test_labels, holdout_data, 
     }
     
     results = []
-    
     for name, model in models.items():
         model.fit(train_data, train_labels)
         for data, labels, dataset_type in [(test_data, test_labels, 'Test'), (holdout_data, holdout_labels, 'Holdout')]:
@@ -172,10 +165,6 @@ def rank_models(train_data, train_labels, test_data, test_labels, holdout_data, 
             precision = precision_score(labels, preds)
             f1 = f1_score(labels, preds)
             roc_auc = roc_auc_score(labels, probs)
-
-            # KS statistic
-            #table_ks = pd.DataFrame({'real_label': labels['premature_flag'], 'probs': probs})
-            # Before using labels, flatten it:
             labels = np.ravel(labels)
             table_ks = pd.DataFrame({'real_label': labels, 'probs': probs})
             
@@ -184,14 +173,8 @@ def rank_models(train_data, train_labels, test_data, test_labels, holdout_data, 
             ks_stat = ks_2samp(positive_probs, negative_probs).statistic
 
             results.append({
-                'Model': name,
-                'dataset_type': dataset_type,
-                'Accuracy': accuracy,
-                'Recall': recall,
-                'Precision': precision,
-                'F1 Score': f1,
-                'KS Stat': ks_stat,
-                'ROC AUC': roc_auc
+                'Model': name,'dataset_type': dataset_type, 'Accuracy': accuracy,'Recall': recall,
+                'Precision': precision,'F1 Score': f1,'KS Stat': ks_stat,'ROC AUC': roc_auc
             })
     
     results_df = pd.DataFrame(results)
