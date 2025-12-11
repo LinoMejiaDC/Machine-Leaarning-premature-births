@@ -4,10 +4,22 @@ import pickle
 import os
 import sys
 
+# --- Carregar modelo ---
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(CURRENT_DIR, "outputs", "models", "trained_model_4_20251022_141748.pkl")
+
+@st.cache_resource
+def load_model():
+    with open(MODEL_PATH, "rb") as f:
+        model = pickle.load(f)
+    return model
+
+model = load_model()
+
 # --- Ajustar path para importar scripts (se precisar) ---
 # Adiciona o diretório atual ao PYTHONPATH
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(CURRENT_DIR)
+#CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+#sys.path.append(CURRENT_DIR)
 
 # try:
 #     from scripts.Wrangling import (
@@ -20,7 +32,7 @@ sys.path.append(CURRENT_DIR)
 #     pass
 
 # --- Carregar modelo ---
-MODEL_PATH = os.path.join(CURRENT_DIR, "models", "propensity_model.pkl")
+#MODEL_PATH = os.path.join(CURRENT_DIR, "models", "propensity_model.pkl")
 
 #@st.cache_resource
 # def load_model():
@@ -31,8 +43,8 @@ MODEL_PATH = os.path.join(CURRENT_DIR, "models", "propensity_model.pkl")
 # model = load_model()
 
 # --- UI ---
-st.title("Premature Birth Risk  Scoring Tool")
-st.write("Preencha os dados da paciente para calcular o risco.")
+st.title("Modelo IA para parto prematuro")
+st.write("llene los datos del paciente...")
 
 # 1-numerico 
 #age = st.number_input("Idade (anos)", min_value=10, max_value=60, value=28)
@@ -189,7 +201,7 @@ RE516171_V717 = RE516171_V717_map[RE516171_V717_label]
 
 
 # QS25AA - Idioma o lengua materna aprendida en la niñez
-CSALUD01_QS25A_label = st.selectbox(
+CSALUD01_QS25AA_label = st.selectbox(
     "¿Cuál es el idioma o lengua materna que aprendió hablar en su niñez?",
     [
         "Quechua",
@@ -208,7 +220,7 @@ CSALUD01_QS25A_label = st.selectbox(
 )
 
 # --- Mapping according to the values you provided ---
-CSALUD01_QS25A_map = {
+CSALUD01_QS25AA_map = {
     "Quechua": 0.07923371838921675,
     "Aimara": 0.05442813420625482,
     "Ashaninka": 0.07874633165084714,
@@ -223,7 +235,7 @@ CSALUD01_QS25A_map = {
     "Otra lengua extranjera": 0.21883524418464348
 }
 
-CSALUD01_QS25A = CSALUD01_QS25A_map[CSALUD01_QS25A_label]
+CSALUD01_QS25AA = CSALUD01_QS25AA_map[CSALUD01_QS25AA_label]
 
 
 # REC41_M45
@@ -259,7 +271,7 @@ RE516171_V501_map = {
 }
 
 # Valor final para mandar ao modelo
-RE516171_V501_value = RE516171_V501_map[RE516171_V501_label]
+RE516171_V501 = RE516171_V501_map[RE516171_V501_label]
 
 
 REC94_S411BA= st.number_input("¿Cuantos meses de embarazo tenía usted cuando le realizaron el primer Examen de Orina?", 
@@ -293,7 +305,7 @@ CSALUD01_QS27_map = {
 }
 
 # Valor final para o modelo:
-CSALUD01_QS27_value = CSALUD01_QS27_map[CSALUD01_QS27_label]
+CSALUD01_QS27 = CSALUD01_QS27_map[CSALUD01_QS27_label]
 
 
 
@@ -323,7 +335,7 @@ CSALUD01_QS27_map = {
 
 }
 
-CSALUD01_QS27_value = CSALUD01_QS27_map[CSALUD01_QS27_label]
+CSALUD01_QS27 = CSALUD01_QS27_map[CSALUD01_QS27_label]
 
 
 
@@ -513,7 +525,7 @@ RE516171_V743F_map = {
     "Esposo/compañero no tiene ganancias": 0.1364563460702525 # 7
 }
 
-RE516171_V743F_value = RE516171_V743F_map[RE516171_V743F_label]
+RE516171_V743F = RE516171_V743F_map[RE516171_V743F_label]
 
 
 # REC41_M48
@@ -587,7 +599,7 @@ REC94_S411G = REC94_S411G_map[REC94_S411G_label]
 
 
 #REC41_M60
-REC41_M60_label = st.selectbox("¿Durante su embarazo le hicieron la prueba para descartar Sífilis?",
+REC41_M60_label = st.selectbox("¿Durante el embarazo ¿tomó algún medicamento contra las lombrices o los gusanos intestinales?",
                          ["Si", "No", "No sabe"])
 REC41_M60_map = {"Si":  0.20775713209080082,"No": 0.19214411518477217,"No sabe": 0.09188315574750562}
 REC41_M60 = REC41_M60_map[REC41_M60_label]
@@ -728,27 +740,71 @@ REC41_M42E = REC41_M42E_map[REC41_M42E_label]
 if st.button("Calcular risco de parto prematuro"):
     # Monte o DF com os MESMOS nomes de colunas usados no treino
     input_data = pd.DataFrame([{
-        "REC94_S410B": REC94_S410B,
-        "REC41_M44": REC41_M44,
-        "REC41_M14": REC41_M14,
-        "education": education
-    }])
+    "REC94_S410B": REC94_S410B,
+    "REC41_M44": REC41_M44,
+    "REC41_M14": REC41_M14,
+    "REC94_S411J": REC94_S411J,
+    "REC94_QI422A_B": REC94_QI422A_B,
+    "RE516171_V631": RE516171_V631,
+    "REC94_S411K": REC94_S411K,
+    "REC94_S411I": REC94_S411I,
+    "RE516171_V504": RE516171_V504,
+    "REC41_M42C": REC41_M42C,
+    "REC91_V228": REC91_V228,
+    "REC41_M43": REC41_M43,
+    "REC41_M45": REC41_M45,
+    "CSALUD01_QS25AA": CSALUD01_QS25AA,
+    "REC91_V208": REC91_V208,
+    "CSALUD01_QS27": CSALUD01_QS27,
+    "REC91_V212": REC91_V212,
+    "REC41_M13": REC41_M13,
+    "CSALUD01_QS25BB": CSALUD01_QS25BB,
+    "REC41_M48": REC41_M48,
+    "RE516171_V717": RE516171_V717,
+    "RE516171_V743A": RE516171_V743A,
+    "REC94_S411BA": REC94_S411BA,
+    "RE516171_V501": RE516171_V501,
+    "RE516171_V704": RE516171_V704,
+    "RE516171_V743F": RE516171_V743F,
+    "REC94_S413": REC94_S413,
+    "REC91_V217": REC91_V217,
+    "REC91_V218": REC91_V218,
+    "CSALUD01_QS207C": CSALUD01_QS207C,
+    "REC41_M42E": REC41_M42E,
+    "REC94_S411H": REC94_S411H,
+    "RE516171_V715": RE516171_V715,
+    "REC41_M2C": REC41_M2C,
+    "REC41_M57K": REC41_M57K,
+    "RE516171_V732": RE516171_V732,
+    "REC94_QI422A_A": REC94_QI422A_A,
+    "CSALUD01_QS102": CSALUD01_QS102,
+    "REC41_M57M": REC41_M57M,
+    "REC94_S411DA": REC94_S411DA,
+    "REC94_S411G": REC94_S411G,
+    "CSALUD01_QS107": CSALUD01_QS107,
+    "REC41_M60": REC41_M60,
+    "REC94_S411F": REC94_S411F,
+    "RE516171_V705": RE516171_V705,
+    "RE516171_V743E": RE516171_V743E,
+    "REC94_S441": REC94_S441
+    }], columns=model.get_booster().feature_names)
 
-    # Se você tiver um pipeline completo salvo (pré-processamento + modelo),
-    # aqui já funciona direto. Caso contrário, chame funções de Wrangling.
 
-    # prob = model.predict_proba(input_data)[:, 1][0]
-    prob= 0.33
+    prob = model.predict_proba(input_data)[0][1]   # probability of class 1
+    #st.markdown(f"### Risco estimado: **{prob:.2%}**")
 
-    st.markdown(f"### Risco estimado: **{prob:.2%}**")
+    if prob >=0.5:
+        st.warning("Usuaio tendra parto prematuro")
 
-    # Opcional: classificação por faixas
-    if prob >= 0.7:
-        st.error("Alto risco – atenção especial recomendada.")
-    elif prob >= 0.4:
-        st.warning("Risco moderado.")
     else:
-        st.success("Baixo risco.")
+        st.warning("Usuaio NO tendra parto prematuro")
+    # # Opcional: classificação por faixas
+    # if prob >= 0.7:
+    #     st.error("Alto risco – atenção especial recomendada.")
+    # elif prob >= 0.4:
+    #     st.warning("Risco moderado.")
+    # else:
+    #     st.success("Baixo risco.")
 
-    st.header("Dataframe")
-    st.write(input_data)
+    # st.header("Dataframe")
+    # st.write(input_data)
