@@ -6,7 +6,7 @@ import sys
 
 # --- Load model ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(CURRENT_DIR, "models", "trained_model_4_20251022_141748.pkl")
+MODEL_PATH = os.path.join(CURRENT_DIR, "models", "trained_model_4_20251212_202758.pkl")
 
 @st.cache_resource
 def load_model():
@@ -280,32 +280,32 @@ REC94_S411BA= st.number_input("¿Cuantos meses de embarazo tenía usted cuando l
 
 
 
-# --- CSALUD01_QS27: Tipo de seguro de salud ---
-CSALUD01_QS27_label = st.selectbox(
-    "¿Qué tipo de seguro de salud tiene actualmente?",
-    [
-        "Sin seguro",
-        "Seguro Integral de Salud (SIS)",
-        "ESSALUD / IPSS",
-        "Fuerzas Armadas o Policiales",
-        "Entidad Prestadora de Salud",
-        "Seguro privado",
-        "Otro"
-    ]
-)
+# # --- CSALUD01_QS27: Tipo de seguro de salud ---
+# CSALUD01_QS27_label = st.selectbox(
+#     "¿Qué tipo de seguro de salud tiene actualmente?",
+#     [
+#         "Sin seguro",
+#         "Seguro Integral de Salud (SIS)",
+#         "ESSALUD / IPSS",
+#         "Fuerzas Armadas o Policiales",
+#         "Entidad Prestadora de Salud",
+#         "Seguro privado",
+#         "Otro"
+#     ]
+# )
 
-CSALUD01_QS27_map = {
-    "Sin seguro": 0.07253492630669214,      # corresponde ao código " "
-    "Seguro Integral de Salud (SIS)": 0.09816262732470862,  # A
-    "ESSALUD / IPSS": 0.12136395263522679,  # B
-    "Fuerzas Armadas o Policiales": 0.126977005275932,  # C
-    "Entidad Prestadora de Salud": 0.21405169393148776,  # D
-    "Seguro privado": 0.20496226075255936,  # E
-    "Otro": 0.0  # X
-}
+# CSALUD01_QS27_map = {
+#     "Sin seguro": 0.07253492630669214,      # corresponde ao código " "
+#     "Seguro Integral de Salud (SIS)": 0.09816262732470862,  # A
+#     "ESSALUD / IPSS": 0.12136395263522679,  # B
+#     "Fuerzas Armadas o Policiales": 0.126977005275932,  # C
+#     "Entidad Prestadora de Salud": 0.21405169393148776,  # D
+#     "Seguro privado": 0.20496226075255936,  # E
+#     "Otro": 0.0  # X
+# }
 
-# Valor final para o modelo:
-CSALUD01_QS27 = CSALUD01_QS27_map[CSALUD01_QS27_label]
+# # Valor final para o modelo:
+# CSALUD01_QS27 = CSALUD01_QS27_map[CSALUD01_QS27_label]
 
 
 
@@ -791,7 +791,7 @@ if st.button("Calcular risco de parto prematuro"):
 
 
     prob = model.predict_proba(input_data)[0][1]   # probability of class 1
-    #st.markdown(f"### Risco estimado: **{prob:.2%}**")
+    st.markdown(f"### Risco estimado: **{prob:.2%}**")
 
     if prob >=0.5:
         st.warning("Usuaio tendra parto prematuro")
