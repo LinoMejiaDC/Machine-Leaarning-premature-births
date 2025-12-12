@@ -4,9 +4,9 @@ import pickle
 import os
 import sys
 
-# --- Carregar modelo ---
+# --- Load model ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(CURRENT_DIR, "outputs", "models", "trained_model_4_20251022_141748.pkl")
+MODEL_PATH = os.path.join(CURRENT_DIR, "models", "trained_model_4_20251022_141748.pkl")
 
 @st.cache_resource
 def load_model():
