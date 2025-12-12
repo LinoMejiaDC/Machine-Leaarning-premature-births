@@ -1,27 +1,54 @@
-# --- DATA FILES ---
-Premature_model/data/raw/
-Premature_model/data/interim/
-Premature_model/data/processed/
-*.csv
-*.xlsx
-*.parquet
-*.pkl
-*.h5
-*.zip
-*.rar
+# # --- DATA FILES ---
+# Premature_model/data/raw/
+# Premature_model/data/interim/
+# Premature_model/data/processed/
+# *.csv
+# *.xlsx
+# *.parquet
+# #*.pkl
+# *.h5
+# *.zip
+# *.rar
 
-# --- PYTHON CACHE ---
+# # --- PYTHON CACHE ---
+# __pycache__/
+# *.py[cod]
+
+# # --- JUPYTER ---
+# .ipynb_checkpoints/
+
+# # --- SYSTEM FILES ---
+# .DS_Store
+# Thumbs.db
+
+# # --- OUTPUTS ---
+# Premature_model/outputs/reports/
+# Premature_model/outputs/figures/
+
+
+
+
+# Ignore all data
+Premature_model/data/
+
+# Ignore processed outputs EXCEPT model files
+Premature_model/outputs/*.csv
+Premature_model/outputs/*.xlsx
+Premature_model/outputs/*.parquet
+Premature_model/outputs/*.zip
+
+# Allow model files
+!Premature_model/outputs/models/
+!Premature_model/outputs/models/*.pkl
+
+# Python cache
 __pycache__/
 *.py[cod]
 
-# --- JUPYTER ---
+# Jupyter
 .ipynb_checkpoints/
 
-# --- SYSTEM FILES ---
+# System files
 .DS_Store
 Thumbs.db
 
-# --- OUTPUTS ---
-Premature_model/outputs/models/
-Premature_model/outputs/reports/
-Premature_model/outputs/figures/
