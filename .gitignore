@@ -26,6 +26,11 @@ Premature_model/outputs/models/
 Premature_model/outputs/reports/
 Premature_model/outputs/figures/
 
+#--notbook 
+Premature_model/notebooks
+
+#-- scripts 
+Premature_model/scripts
 
 
 # # Ignore all data
