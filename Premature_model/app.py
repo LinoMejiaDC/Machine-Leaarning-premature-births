@@ -745,7 +745,7 @@ if st.button("Calcular risco de parto prematuro"):
     }], columns=model.get_booster().feature_names)
 
 
-    # prob = model.predict_proba(input_data)[0][1]   # probability of class 1
+    prob = model.predict_proba(input_data)[0][1]   # probability of class 1
     # st.markdown(f"### Risco estimado: **{prob:.2%}**")
 
     # if prob >=0.5:
