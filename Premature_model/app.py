@@ -756,60 +756,81 @@ if st.button("Calcular risco de parto prematuro"):
 
     if prob >= 0.5:
         bg_color = "#F7E2D2"
-        inner_color = "#F5C49F"
+        inner_color = "#F4C5A3"
         icon = "⚠️"
         message = "Paciente tendrá un parto prematuro."
         recommendation = "Recomendación de seguimiento intensificado."
 
     else:
-        bg_color = "#E3F3DD"
-        inner_color = "#C4E8B8"
+        bg_color = "#E6F4DF"
+        inner_color = "#CBE8BD"
         icon = "✅"
         message = "Paciente NO tendrá un parto prematuro."
         recommendation = "Recomendación de continuar controles habituales."
+    
+    html_result = f"""
+<div style="
+background:{bg_color};
+padding:30px;
+border-radius:30px;
+margin-top:25px;
+margin-bottom:20px;
+">
 
-st.markdown(
-    f"""
-    <div style="
-        background-color:{bg_color};
-        border-radius:28px;
-        padding:32px;
-        margin-top:24px;
-        margin-bottom:24px;
-        color:#111111;
-    ">
-        <div style="display:flex; align-items:center; gap:24px;">
-            <div style="font-size:48px;">{icon}</div>
+<table style="width:100%; border-collapse:collapse;">
+<tr>
 
-            <div>
-                <div style="font-size:28px; font-weight:700; color:#111111;">
-                    Riesgo estimado:
-                </div>
-                <div style="font-size:44px; font-weight:700; color:#111111;">
-                    {prob:.2%}
-                </div>
-            </div>
-        </div>
+<td style="width:90px; vertical-align:middle; text-align:center;">
+<span style="font-size:55px;">{icon}</span>
+</td>
 
-        <div style="
-            background-color:{inner_color};
-            border-radius:18px;
-            padding:22px;
-            margin-top:26px;
-            color:#111111;
-        ">
-            <div style="font-size:26px; font-style:italic; color:#111111;">
-                {message}
-            </div>
-            <div style="font-size:18px; margin-top:8px; color:#111111;">
-                {recommendation}
-            </div>
-        </div>
-    </div>
+<td>
 
-    <p style="font-size:16px; color:#111111;">
-        ⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
-    </p>
-    """,
-    unsafe_allow_html=True
-)
+<div style="font-size:28px;font-weight:bold;color:#111111;">
+Riesgo estimado:
+</div>
+
+<div style="font-size:48px;font-weight:bold;color:#111111;">
+{prob:.2%}
+</div>
+
+</td>
+
+</tr>
+</table>
+
+<div style="
+background:{inner_color};
+padding:20px;
+border-radius:20px;
+margin-top:20px;
+">
+
+<div style="
+font-size:22px;
+font-style:italic;
+color:#111111;">
+{message}
+</div>
+
+<div style="
+font-size:18px;
+margin-top:8px;
+color:#111111;">
+{recommendation}
+</div>
+
+</div>
+
+</div>
+
+<div style="
+font-size:16px;
+color:#333333;
+line-height:1.5;
+">
+⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
+</div>
+"""
+
+    st.markdown(html_result, unsafe_allow_html=True)
