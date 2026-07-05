@@ -754,122 +754,62 @@ if st.button("Calcular risco de parto prematuro"):
     # else:
     #     st.warning("Usuaio NO tendra parto prematuro")
 
-
     if prob >= 0.5:
-        
-        st.markdown(f"""
-        <div style="
-            background-color:#F7E2D2;
-            border-radius:25px;
-            padding:30px;
-            margin-top:20px;
-            margin-bottom:20px;
-        ">
-
-        <div style="display:flex; align-items:center;">
-
-        <div style="
-            font-size:45px;
-            margin-right:20px;">
-            ⚠️
-        </div>
-
-        <div>
-            <div style="font-size:24px;">
-                <b>Riesgo estimado:</b>
-            </div>
-
-            <div style="font-size:42px; font-weight:bold;">
-                {prob:.2%}
-            </div>
-        </div>
-
-        </div>
-
-        <div style="
-            background:#F5C49F;
-            border-radius:18px;
-            padding:18px;
-            margin-top:25px;
-        ">
-
-        <div style="
-            font-size:22px;
-            font-style:italic;">
-            Paciente tendrá un parto prematuro.
-        </div>
-
-        <div style="
-            font-size:16px;
-            margin-top:8px;">
-            Recomendación de seguimiento intensificado.
-        </div>
-
-        </div>
-
-        </div>
-
-        <p style="font-size:15px;">
-        ⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
-        </p>
-        """, unsafe_allow_html=True)
+        bg_color = "#F7E2D2"
+        inner_color = "#F5C49F"
+        icon = "⚠️"
+        message = "Paciente tendrá un parto prematuro."
+        recommendation = "Recomendación de seguimiento intensificado."
 
     else:
+        bg_color = "#E3F3DD"
+        inner_color = "#C4E8B8"
+        icon = "✅"
+        message = "Paciente NO tendrá un parto prematuro."
+        recommendation = "Recomendación de continuar controles habituales."
 
-        st.markdown(f"""
-        <div style="
-            background-color:#DFF5E3;
-            border-radius:25px;
-            padding:30px;
-            margin-top:20px;
-            margin-bottom:20px;
-        ">
+st.markdown(
+    f"""
+    <div style="
+        background-color:{bg_color};
+        border-radius:28px;
+        padding:32px;
+        margin-top:24px;
+        margin-bottom:24px;
+        color:#111111;
+    ">
+        <div style="display:flex; align-items:center; gap:24px;">
+            <div style="font-size:48px;">{icon}</div>
 
-        <div style="display:flex; align-items:center;">
-
-        <div style="
-            font-size:45px;
-            margin-right:20px;">
-            ✅
-        </div>
-
-        <div>
-            <div style="font-size:24px;">
-                <b>Riesgo estimado:</b>
+            <div>
+                <div style="font-size:28px; font-weight:700; color:#111111;">
+                    Riesgo estimado:
+                </div>
+                <div style="font-size:44px; font-weight:700; color:#111111;">
+                    {prob:.2%}
+                </div>
             </div>
-
-            <div style="font-size:42px; font-weight:bold;">
-                {prob:.2%}
-            </div>
-        </div>
-
         </div>
 
         <div style="
-            background:#BFECC7;
+            background-color:{inner_color};
             border-radius:18px;
-            padding:18px;
-            margin-top:25px;
+            padding:22px;
+            margin-top:26px;
+            color:#111111;
         ">
-
-        <div style="
-            font-size:22px;
-            font-style:italic;">
-            Paciente NO tendrá un parto prematuro.
+            <div style="font-size:26px; font-style:italic; color:#111111;">
+                {message}
+            </div>
+            <div style="font-size:18px; margin-top:8px; color:#111111;">
+                {recommendation}
+            </div>
         </div>
+    </div>
 
-        <div style="
-            font-size:16px;
-            margin-top:8px;">
-            Riesgo bajo según el modelo de IA.
-        </div>
-
-        </div>
-
-        </div>
-
-        <p style="font-size:15px;">
+    <p style="font-size:16px; color:#111111;">
         ⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
-        </p>
-        """, unsafe_allow_html=True)
-
+    </p>
+    """,
+    unsafe_allow_html=True
+)
