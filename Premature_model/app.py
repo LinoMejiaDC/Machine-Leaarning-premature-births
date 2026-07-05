@@ -16,35 +16,22 @@ def load_model():
 
 model = load_model()
 
-# --- Ajustar path para importar scripts (se precisar) ---
-# Adiciona o diretório atual ao PYTHONPATH
-#CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-#sys.path.append(CURRENT_DIR)
-
-# try:
-#     from scripts.Wrangling import (
-#         # importe aqui funções que você quiser usar para pré-processar
-#         # ex: fill_missing_with_mode, categorize_columns, etc.
-#         )
-    
-# except Exception:
-#     # Se não precisar dos scripts agora, pode ignorar
-#     pass
-
-# --- Carregar modelo ---
-#MODEL_PATH = os.path.join(CURRENT_DIR, "models", "propensity_model.pkl")
-
-#@st.cache_resource
-# def load_model():
-#     with open(MODEL_PATH, "rb") as f:
-#         model = pickle.load(f)
-#     return model
-
-# model = load_model()
 
 # --- UI ---
-st.title("Modelo IA para parto prematuro")
-st.write("llene los datos del paciente...")
+st.title("PremaTerm Risk Score")
+st.write("Aplicación de predicción inteligente de riesgo de parto prematuro")
+
+st.markdown("""
+### Instrucciones para el profesional de salud
+
+Complete cada campo con la información clínica actual de la paciente.
+
+Este instrumento de apoyo diagnóstico emplea un modelo de aprendizaje automático.  
+El sistema procesará los datos de forma inmediata, entregará un porcentaje de riesgo estimado y la predicción del paciente.
+
+**★ Todos los campos son obligatorios para obtener una predicción válida.**
+""")
+
 
 # 1-numerico 
 #age = st.number_input("Idade (anos)", min_value=10, max_value=60, value=28)
@@ -276,38 +263,6 @@ RE516171_V501 = RE516171_V501_map[RE516171_V501_label]
 
 REC94_S411BA= st.number_input("¿Cuantos meses de embarazo tenía usted cuando le realizaron el primer Examen de Orina?", 
                               min_value=1, max_value=50, value=1)
-
-
-
-
-# # --- CSALUD01_QS27: Tipo de seguro de salud ---
-# CSALUD01_QS27_label = st.selectbox(
-#     "¿Qué tipo de seguro de salud tiene actualmente?",
-#     [
-#         "Sin seguro",
-#         "Seguro Integral de Salud (SIS)",
-#         "ESSALUD / IPSS",
-#         "Fuerzas Armadas o Policiales",
-#         "Entidad Prestadora de Salud",
-#         "Seguro privado",
-#         "Otro"
-#     ]
-# )
-
-# CSALUD01_QS27_map = {
-#     "Sin seguro": 0.07253492630669214,      # corresponde ao código " "
-#     "Seguro Integral de Salud (SIS)": 0.09816262732470862,  # A
-#     "ESSALUD / IPSS": 0.12136395263522679,  # B
-#     "Fuerzas Armadas o Policiales": 0.126977005275932,  # C
-#     "Entidad Prestadora de Salud": 0.21405169393148776,  # D
-#     "Seguro privado": 0.20496226075255936,  # E
-#     "Otro": 0.0  # X
-# }
-
-# # Valor final para o modelo:
-# CSALUD01_QS27 = CSALUD01_QS27_map[CSALUD01_QS27_label]
-
-
 
 
 
@@ -790,21 +745,131 @@ if st.button("Calcular risco de parto prematuro"):
     }], columns=model.get_booster().feature_names)
 
 
-    prob = model.predict_proba(input_data)[0][1]   # probability of class 1
-    st.markdown(f"### Risco estimado: **{prob:.2%}**")
+    # prob = model.predict_proba(input_data)[0][1]   # probability of class 1
+    # st.markdown(f"### Risco estimado: **{prob:.2%}**")
 
-    if prob >=0.5:
-        st.warning("Usuaio tendra parto prematuro")
+    # if prob >=0.5:
+    #     st.warning("Usuaio tendra parto prematuro")
+
+    # else:
+    #     st.warning("Usuaio NO tendra parto prematuro")
+
+
+    if prob >= 0.5:
+        
+        st.markdown(f"""
+        <div style="
+            background-color:#F7E2D2;
+            border-radius:25px;
+            padding:30px;
+            margin-top:20px;
+            margin-bottom:20px;
+        ">
+
+        <div style="display:flex; align-items:center;">
+
+        <div style="
+            font-size:45px;
+            margin-right:20px;">
+            ⚠️
+        </div>
+
+        <div>
+            <div style="font-size:24px;">
+                <b>Riesgo estimado:</b>
+            </div>
+
+            <div style="font-size:42px; font-weight:bold;">
+                {prob:.2%}
+            </div>
+        </div>
+
+        </div>
+
+        <div style="
+            background:#F5C49F;
+            border-radius:18px;
+            padding:18px;
+            margin-top:25px;
+        ">
+
+        <div style="
+            font-size:22px;
+            font-style:italic;">
+            Paciente tendrá un parto prematuro.
+        </div>
+
+        <div style="
+            font-size:16px;
+            margin-top:8px;">
+            Recomendación de seguimiento intensificado.
+        </div>
+
+        </div>
+
+        </div>
+
+        <p style="font-size:15px;">
+        ⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
+        </p>
+        """, unsafe_allow_html=True)
 
     else:
-        st.warning("Usuaio NO tendra parto prematuro")
-    # # Opcional: classificação por faixas
-    # if prob >= 0.7:
-    #     st.error("Alto risco – atenção especial recomendada.")
-    # elif prob >= 0.4:
-    #     st.warning("Risco moderado.")
-    # else:
-    #     st.success("Baixo risco.")
 
-    # st.header("Dataframe")
-    # st.write(input_data)
+        st.markdown(f"""
+        <div style="
+            background-color:#DFF5E3;
+            border-radius:25px;
+            padding:30px;
+            margin-top:20px;
+            margin-bottom:20px;
+        ">
+
+        <div style="display:flex; align-items:center;">
+
+        <div style="
+            font-size:45px;
+            margin-right:20px;">
+            ✅
+        </div>
+
+        <div>
+            <div style="font-size:24px;">
+                <b>Riesgo estimado:</b>
+            </div>
+
+            <div style="font-size:42px; font-weight:bold;">
+                {prob:.2%}
+            </div>
+        </div>
+
+        </div>
+
+        <div style="
+            background:#BFECC7;
+            border-radius:18px;
+            padding:18px;
+            margin-top:25px;
+        ">
+
+        <div style="
+            font-size:22px;
+            font-style:italic;">
+            Paciente NO tendrá un parto prematuro.
+        </div>
+
+        <div style="
+            font-size:16px;
+            margin-top:8px;">
+            Riesgo bajo según el modelo de IA.
+        </div>
+
+        </div>
+
+        </div>
+
+        <p style="font-size:15px;">
+        ⚠️ Este resultado es una predicción generada por un modelo de inteligencia artificial y no reemplaza el criterio clínico del profesional de salud. Debe interpretarse en conjunto con el contexto clínico completo de la paciente.
+        </p>
+        """, unsafe_allow_html=True)
+
