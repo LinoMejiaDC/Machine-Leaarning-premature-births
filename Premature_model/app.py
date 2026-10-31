@@ -102,7 +102,7 @@ REC94_S411I = REC94_S411I_map[REC94_S411I_label]
 
 
 # RE516171_V743A
-RE516171_V743A_label = st.selectbox("Quién tiene la última palabra sobre: cuidado de su salud",
+RE516171_V743A_label = st.selectbox("Quién tiene la última palabra sobre cuidado de su salud",
                          ["Nadie", 
                         "Entrevistada",
                         "Entrevistada y esposo/compañero",
@@ -484,7 +484,7 @@ RE516171_V743F = RE516171_V743F_map[RE516171_V743F_label]
 
 
 # REC41_M48
-REC41_M48_label = st.selectbox("¿Durante el embarazo ¿Tenía usted algún problema para ver los objetos, cosas o personas siendo de noche?",
+REC41_M48_label = st.selectbox("Durante el embarazo ¿Tenía usted algún problema para ver los objetos, cosas o personas siendo de noche?",
                          ["Si", "No", "No sabe"])
 REC41_M48_map = {"Si":  0.25560398731401435,"No": 0.19059454787050883,"No sabe": 0.0}
 REC41_M48 = REC41_M48_map[REC41_M48_label]
@@ -692,7 +692,7 @@ REC41_M42E = REC41_M42E_map[REC41_M42E_label]
 
 
 # Quando clicar no botão, monta o dataframe e faz o score
-if st.button("Calcular risco de parto prematuro"):
+if st.button("Calcular riesgo de parto prematuro"):
     # Monte o DF com os MESMOS nomes de colunas usados no treino
     input_data = pd.DataFrame([{
     "REC94_S410B": REC94_S410B,
