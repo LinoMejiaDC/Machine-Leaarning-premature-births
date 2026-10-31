@@ -5,7 +5,7 @@ Premature_model/data/processed/
 *.csv
 *.xlsx
 *.parquet
-*.pkl
+#*.pkl
 *.h5
 *.zip
 *.rar
@@ -25,3 +25,35 @@ Thumbs.db
 Premature_model/outputs/models/
 Premature_model/outputs/reports/
 Premature_model/outputs/figures/
+
+#--notbook 
+Premature_model/notebooks
+
+#-- scripts 
+Premature_model/scripts
+
+
+# # Ignore all data
+# Premature_model/data/
+
+# # Ignore processed outputs EXCEPT model files
+# Premature_model/outputs/*.csv
+# Premature_model/outputs/*.xlsx
+# Premature_model/outputs/*.parquet
+# Premature_model/outputs/*.zip
+
+# # Allow model files
+# !Premature_model/outputs/models/
+# !Premature_model/outputs/models/*.pkl
+
+# # Python cache
+# __pycache__/
+# *.py[cod]
+
+# # Jupyter
+# .ipynb_checkpoints/
+
+# # System files
+# .DS_Store
+# Thumbs.db
+
